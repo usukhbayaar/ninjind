@@ -12,6 +12,22 @@ const MAX_IMAGES = 5;
 let play = true;
 let noCount = 0;
 
+// Preload images
+const preloadedImages = {};
+preloadImages();
+
+function preloadImages() {
+  for (let i = 0; i <= MAX_IMAGES; i++) {
+    const img = new Image();
+    img.src = `img/cat-${i}.jpg`;
+    preloadedImages[i] = img;
+  }
+
+  const yesImg = new Image();
+  yesImg.src = "img/cat-yes.jpg";
+  preloadedImages["yes"] = yesImg;
+}
+
 yesButton.addEventListener("click", handleYesClick);
 
 noButton.addEventListener("click", function () {
@@ -57,7 +73,11 @@ function generateMessage(noCount) {
 }
 
 function changeImage(image) {
-  catImg.src = `img/cat-${image}.jpg`;
+  if (preloadedImages[image]) {
+    catImg.src = preloadedImages[image].src;
+  } else {
+    console.error(`Image not preloaded: ${image}`);
+  }
 }
 
 function updateNoButtonText() {
